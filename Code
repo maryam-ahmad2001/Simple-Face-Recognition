@@ -1,0 +1,64 @@
+!pip install keras==2.4.3
+!pip install tensorflow==2.3.0
+!pip install mtcnn==0.1.0
+
+
+#loading the dataset
+!wget -O dataset.zip https://techlearn-cdn.s3.amazonaws.com/bs_face_recognition/dataset.zip
+!unzip dataset.zip
+
+
+#finding the people in our dataset
+import os
+face_dataset_folder = "dataset/"
+
+for folder in os.listdir(face_dataset_folder):
+    print(folder)
+    
+
+#visualising the images from each folder
+import matplotlib.pyplot as plt
+import cv2
+import numpy as np
+plt.figure(figsize = (15 , 10))
+counter = 0
+
+for folder in os.listdir(face_dataset_folder):
+    folder_counter = 0
+    for image_file in os.listdir(face_dataset_folder + folder):
+        if folder_counter == 4:
+            break
+        image = cv2.imread(face_dataset_folder + folder + '/' + image_file, 0)
+        
+        plt.subplot(4, 4, counter + 1)
+        plt.axis('off')
+        plt.imshow(image, cmap = "gray")
+        plt.title(folder)
+        
+        counter = counter + 1
+        folder_counter = folder_counter + 1
+plt.show()
+#gray is because matplotlib works in 2d so third layer which is blue is eliminated from the images.
+
+
+#detecting faces in the images
+import mtcnn
+# Creating an instance of MTCNN Face Detector
+detector = mtcnn.MTCNN()
+def face_detection(filename):
+    all_faces = detector.detect_faces(plt.imread(filename))
+    data = plt.imread(filename)
+    plt.imshow(data)
+    ax = plt.gca()
+    #gca is the coordinates on which we have to draw the rectangle - get current axis
+    for result in all_faces:
+        x, y, width, height = result['box']
+        print(result)
+        rect = plt.Rectangle((x, y), width, height, fill = False, color = 'blue')
+        ax.add_patch(rect)
+        #Add rectangle on the image
+        plt.show()
+        
+ face_detection('dataset/Amitabh Bachchan/pic1.jpg')
+ 
+ #rest of the code coming up soon !
