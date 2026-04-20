@@ -19,7 +19,9 @@ The model follows a standard face-recognition workflow:
 ***Tools & Technologies***
 
 •	Python — core implementation language
+
 •	OpenCV / face_recognition library — image handling and detection
+
 •	NumPy — vector operations and distance calculations
 
 ***Key Takeaways***
